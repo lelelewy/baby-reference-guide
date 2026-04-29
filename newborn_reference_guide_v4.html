@@ -1,0 +1,518 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .guide { font-family: var(--font-sans); color: var(--color-text-primary); max-width: 680px; padding: 0 0 2rem; }
+  .hero { background: #1a3a2a; border-radius: var(--border-radius-lg); padding: 2rem 2rem 1.5rem; margin-bottom: 1.5rem; color: #fff; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -30px; right: -30px; width: 180px; height: 180px; border-radius: 50%; border: 40px solid rgba(255,255,255,0.05); }
+  .hero-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8fbd9f; margin-bottom: 0.5rem; }
+  .hero h1 { font-size: 24px; font-weight: 500; color: #fff; margin-bottom: 0.4rem; line-height: 1.3; }
+  .hero p { font-size: 13px; color: #a8c8b8; line-height: 1.6; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .tab { padding: 7px 13px; border-radius: 20px; border: 0.5px solid var(--color-border-secondary); font-size: 12px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.15s; white-space: nowrap; }
+  .tab.active { background: #1a3a2a; color: #fff; border-color: #1a3a2a; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .section-title { font-size: 18px; font-weight: 500; margin-bottom: 1.25rem; color: var(--color-text-primary); padding-bottom: 0.75rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+  .card-title { font-size: 14px; font-weight: 500; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-green { background: #1D9E75; } .dot-amber { background: #BA7517; } .dot-blue { background: #378ADD; } .dot-coral { background: #D85A30; } .dot-purple { background: #7F77DD; } .dot-pink { background: #D4537E; }
+  .card p, .card li { font-size: 13px; line-height: 1.7; color: var(--color-text-secondary); }
+  .card ul { padding-left: 1.25rem; }
+  .card li { margin-bottom: 4px; }
+  .schedule-row { display: grid; grid-template-columns: 90px 1fr; gap: 0 1rem; align-items: start; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .schedule-row:last-child { border-bottom: none; }
+  .time-badge { font-size: 11px; font-weight: 500; color: #0F6E56; background: #E1F5EE; border-radius: 4px; padding: 3px 8px; white-space: nowrap; margin-top: 2px; display: inline-block; }
+  .schedule-text { font-size: 13px; line-height: 1.6; color: var(--color-text-secondary); }
+  .schedule-text strong { color: var(--color-text-primary); font-weight: 500; }
+  .alert-box { border-left: 3px solid; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 0.9rem 1rem; margin-bottom: 1rem; font-size: 13px; line-height: 1.6; }
+  .alert-red { border-color: #E24B4A; background: #FCEBEB; color: #501313; }
+  .alert-amber { border-color: #BA7517; background: #FAEEDA; color: #412402; }
+  .alert-green { border-color: #1D9E75; background: #E1F5EE; color: #04342C; }
+  .alert-pink { border-color: #D4537E; background: #FBEAF0; color: #4B1528; }
+  .alert-blue { border-color: #378ADD; background: #E6F1FB; color: #042C53; }
+  .alert-purple { border-color: #7F77DD; background: #EEEDFE; color: #26215C; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .stat-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem; text-align: center; }
+  .stat-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .stat-value { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+  .stat-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+  .step { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .step:last-child { border-bottom: none; }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; background: #1a3a2a; color: #fff; font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-text { font-size: 13px; line-height: 1.6; color: var(--color-text-secondary); }
+  .step-text strong { color: var(--color-text-primary); font-weight: 500; display: block; margin-bottom: 1px; }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-right: 4px; margin-bottom: 4px; font-weight: 500; }
+  .badge-green { background: #E1F5EE; color: #0F6E56; }
+  .badge-amber { background: #FAEEDA; color: #854F0B; }
+  .badge-red { background: #FCEBEB; color: #A32D2D; }
+  .badge-pink { background: #FBEAF0; color: #993556; }
+  .badge-blue { background: #E6F1FB; color: #185FA5; }
+  .badge-purple { background: #EEEDFE; color: #534AB7; }
+  .resource-link { display: flex; align-items: flex-start; gap: 10px; padding: 12px 0; border-bottom: 0.5px solid var(--color-border-tertiary); text-decoration: none; }
+  .resource-link:last-child { border-bottom: none; }
+  .resource-cat { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; white-space: nowrap; margin-top: 2px; }
+  .rc-bf { background: #FBEAF0; color: #993556; } .rc-health { background: #E6F1FB; color: #185FA5; } .rc-mh { background: #EEEDFE; color: #534AB7; } .rc-baby { background: #E1F5EE; color: #0F6E56; } .rc-general { background: #F1EFE8; color: #5F5E5A; }
+  .resource-text { flex: 1; }
+  .resource-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .resource-desc { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; line-height: 1.5; }
+  .tip-row { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .tip-row:last-child { border-bottom: none; }
+  .tip-icon { width: 28px; height: 28px; border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; font-weight: 500; }
+  .tip-body { font-size: 13px; line-height: 1.6; color: var(--color-text-secondary); }
+  .tip-body strong { color: var(--color-text-primary); font-weight: 500; display: block; margin-bottom: 2px; }
+  .nap-option { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .nap-option:last-child { border-bottom: none; }
+  .nap-label { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 4px; white-space: nowrap; margin-top: 2px; flex-shrink: 0; min-width: 80px; text-align: center; }
+  .nap-text { font-size: 13px; line-height: 1.6; color: var(--color-text-secondary); }
+  .nap-text strong { color: var(--color-text-primary); font-weight: 500; }
+  .mode-card { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.1rem; margin-bottom: 0.75rem; }
+  .mode-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.6rem; }
+  .mode-pill { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 10px; }
+  .mode-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+  .mode-body { font-size: 13px; line-height: 1.7; color: var(--color-text-secondary); }
+  .mode-body li { margin-bottom: 3px; }
+  .flow-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); flex-wrap: wrap; }
+  .flow-row:last-child { border-bottom: none; }
+  .flow-pill { font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 12px; white-space: nowrap; }
+  .flow-arrow { font-size: 14px; color: var(--color-text-tertiary); }
+  .flow-note { font-size: 12px; color: var(--color-text-secondary); flex: 1; min-width: 160px; }
+</style>
+
+<div class="guide">
+  <div class="hero">
+    <div class="hero-label">New parent reference guide</div>
+    <h1>Your first weeks home with baby</h1>
+    <p>A calm, practical reference for the whole family. You've got this, Mom.</p>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('schedule', this)">Daily rhythm</div>
+    <div class="tab" onclick="showTab('feeding', this)">Feeding</div>
+    <div class="tab" onclick="showTab('pumping', this)">Pumping & bottles</div>
+    <div class="tab" onclick="showTab('diapering', this)">Diapering</div>
+    <div class="tab" onclick="showTab('sleep', this)">Sleep & soothing</div>
+    <div class="tab" onclick="showTab('bathing', this)">Bathing & care</div>
+    <div class="tab" onclick="showTab('postpartum', this)">Postpartum (for wife)</div>
+    <div class="tab" onclick="showTab('tips', this)">Tips & tricks</div>
+    <div class="tab" onclick="showTab('resources', this)">Resources</div>
+    <div class="tab" onclick="showTab('alerts', this)">When to call</div>
+  </div>
+
+  <!-- SCHEDULE -->
+  <div class="section active" id="section-schedule">
+    <div class="section-title">The daily rhythm (weeks 1–4)</div>
+    <div class="alert-box alert-green">There is no real "schedule" yet — newborns eat, sleep, and repeat every 2–3 hours around the clock. Your job is to respond, not impose a routine.</div>
+    <div class="two-col">
+      <div class="stat-card"><div class="stat-label">Feeding frequency</div><div class="stat-value">8–12x</div><div class="stat-sub">per day</div></div>
+      <div class="stat-card"><div class="stat-label">Sleep per day</div><div class="stat-value">16–18h</div><div class="stat-sub">in 2–4hr stretches</div></div>
+      <div class="stat-card"><div class="stat-label">Wet diapers</div><div class="stat-value">6+</div><div class="stat-sub">after day 4–5</div></div>
+      <div class="stat-card"><div class="stat-label">Poop frequency</div><div class="stat-value">3–4x</div><div class="stat-sub">per day (can vary widely)</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-green"></span>Typical cycle (repeats day and night)</div>
+      <div class="schedule-row"><span class="time-badge">0–30 min</span><div class="schedule-text"><strong>Wake & hunger cues.</strong> Rooting, sucking fists, turning head. Crying is a late cue.</div></div>
+      <div class="schedule-row"><span class="time-badge">20–45 min</span><div class="schedule-text"><strong>Feed.</strong> Breast or bottle. Burp midway and at end.</div></div>
+      <div class="schedule-row"><span class="time-badge">15–30 min</span><div class="schedule-text"><strong>Diaper check & awake time.</strong> Brief alert period — talk, make eye contact, short tummy time.</div></div>
+      <div class="schedule-row"><span class="time-badge">1.5–2.5 hrs</span><div class="schedule-text"><strong>Sleep.</strong> Put down drowsy but awake when possible. Repeat from top.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-blue"></span>Daytime naps — you don't have to stay in the bedroom</div>
+      <div class="alert-box alert-blue" style="margin-bottom:1rem;">Baby comes with you — you are not sequestered to the bedroom during naps. No monitor needed when you're in the same room. A monitor becomes relevant later when baby moves to their own nursery.</div>
+      <div class="nap-option"><span class="nap-label" style="background:#E1F5EE; color:#0F6E56;">Move it</span><div class="nap-text"><strong>Wheel the bassinet to wherever you are.</strong> Many bassinets are on wheels for exactly this reason — living room, kitchen, wherever.</div></div>
+      <div class="nap-option"><span class="nap-label" style="background:#E6F1FB; color:#185FA5;">Second spot</span><div class="nap-text"><strong>Keep a pack-n-play in your main living area.</strong> A dedicated daytime nap spot means you never have to move the bassinet back and forth.</div></div>
+      <div class="nap-option"><span class="nap-label" style="background:#EEEDFE; color:#534AB7;">Babywear</span><div class="nap-text"><strong>Use a soft carrier or wrap.</strong> Baby sleeps on you, hands-free. Follow safe babywearing: face always visible, chin off chest, airways clear.</div></div>
+      <div class="nap-option"><span class="nap-label" style="background:#FAEEDA; color:#854F0B;">Hold them</span><div class="nap-text"><strong>Contact naps are completely fine in the early weeks.</strong> Not a bad habit yet. The closeness is good for both of you.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-purple"></span>Your role as support partner</div>
+      <ul>
+        <li>Take shifts — one parent "on duty" while the other sleeps</li>
+        <li>Handle burping, diapering, and resettling after feeds so your wife can rest</li>
+        <li>Keep a simple log: feeding time, duration, last diaper — helps spot patterns fast</li>
+        <li>Eat, drink water, and sleep whenever baby sleeps</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FEEDING -->
+  <div class="section" id="section-feeding">
+    <div class="section-title">Feeding</div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-green"></span>Breastfeeding basics</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Latch is everything.</strong> Baby's mouth should cover the areola, not just the nipple. Lips flanged out. A good latch shouldn't hurt — initial tenderness is normal, sharp pain is not.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Feed on demand, both breasts.</strong> Offer whenever baby shows hunger cues. Switch sides each session. Start on the side you left off.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Track output to track intake.</strong> Count wet/dirty diapers. 6+ wet diapers/day after day 4 = adequate intake.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Engorgement is common.</strong> Warm compress before feeding, cold pack after. A lactation consultant can help with most issues.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-blue"></span>Bottle feeding (formula or pumped milk)</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Preparation.</strong> Formula: mix exactly as directed. Pumped milk: warm gently in warm water bath, never microwave.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Paced feeding.</strong> Hold bottle horizontal. Let baby control the flow. Take breaks. Prevents overfeeding and gas.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Amount guide.</strong> First days: 1–2 oz. End of week 1: 1.5–3 oz. Weeks 2–4: 2–4 oz. Feed until baby shows fullness cues.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Storage.</strong> Formula: toss after 1 hour at room temp. Breastmilk: 4 hrs room temp, 4 days fridge, 6 months freezer.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>Burping — every time</div>
+      <ul>
+        <li><strong>When:</strong> midway through feed and at the end</li>
+        <li><strong>Over shoulder:</strong> upright against chest, gently pat/rub back</li>
+        <li><strong>Sitting upright:</strong> support chin, lean slightly forward, pat back</li>
+        <li><strong>Across lap:</strong> face down on thighs, support head, pat back</li>
+        <li>Burp for 2–3 minutes — no burp is okay, try upright time instead</li>
+        <li>Some spit-up is normal. "Happy spitter" = thriving despite spitting up</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PUMPING & BOTTLES -->
+  <div class="section" id="section-pumping">
+    <div class="section-title">Pumping & bottles — how it all fits together</div>
+
+    <div class="alert-box alert-purple">The goal in the early weeks is to establish and protect milk supply. That means milk needs to be removed — by nursing or pumping — roughly every 2–3 hours. Long gaps send a signal to produce less.</div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot dot-green"></span>The three modes</div>
+      <div class="mode-card">
+        <div class="mode-header"><span class="mode-pill" style="background:#E1F5EE; color:#0F6E56;">Direct nursing</span><span class="mode-title">The foundation</span></div>
+        <div class="mode-body">The default, whenever possible. Baby is better at extracting milk than any pump, and the hormonal feedback loop works best with direct feeding. Building supply starts here. Do this as the primary method for all feeds you can.</div>
+      </div>
+      <div class="mode-card">
+        <div class="mode-header"><span class="mode-pill" style="background:#E6F1FB; color:#185FA5;">Pumping</span><span class="mode-title">Builds supply & creates a stash</span></div>
+        <div class="mode-body">Pump to build a freezer stash, relieve engorgement, maintain supply when baby can't nurse, or create bottles for a partner to use. Pumping after a nursing session in the early weeks (even if little comes out) signals the body to produce more. Best time to pump: right after the first morning feed — supply is highest then.</div>
+      </div>
+      <div class="mode-card">
+        <div class="mode-header"><span class="mode-pill" style="background:#FBEAF0; color:#993556;">Bottle of pumped milk</span><span class="mode-title">Buys a sleep stretch</span></div>
+        <div class="mode-body">Lets your wife sleep through one overnight feed while you handle it, or lets other family members feed baby. The key rule: if she skips a nursing session, she should pump at roughly the same time — otherwise supply takes a hit over time.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot dot-purple"></span>The golden rule: skip a feed = pump at the same time</div>
+      <div class="flow-row">
+        <span class="flow-pill" style="background:#FBEAF0; color:#993556;">Wife skips overnight feed</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill" style="background:#E6F1FB; color:#185FA5;">You bottle-feed baby</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill" style="background:#E1F5EE; color:#0F6E56;">Wife pumps same time</span>
+        <div class="flow-note">She keeps supply up, you both handle the feed, and she gets a longer sleep stretch.</div>
+      </div>
+      <div class="flow-row">
+        <span class="flow-pill" style="background:#FBEAF0; color:#993556;">Wife skips feed, no pump</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill" style="background:#FCEBEB; color:#A32D2D;">Supply starts to dip</span>
+        <div class="flow-note">Over days, skipped sessions without pumping signal the body to make less. Okay occasionally, not as a pattern in early weeks.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot dot-blue"></span>A realistic daily pumping rhythm (weeks 1–4)</div>
+      <div class="schedule-row"><span class="time-badge">Morning</span><div class="schedule-text"><strong>Best pump session of the day.</strong> Pump once after the first morning nursing session. Supply is highest and letdown is easiest. This is your primary stash-building session.</div></div>
+      <div class="schedule-row"><span class="time-badge">Daytime</span><div class="schedule-text"><strong>Nurse directly as much as possible.</strong> Pump only if engorged, if baby skipped a feed, or if you're trying to boost supply. No need to pump after every nursing session.</div></div>
+      <div class="schedule-row"><span class="time-badge">Evening</span><div class="schedule-text"><strong>Optional second pump.</strong> Some families pump once in the evening to build the overnight bottle supply. Worth doing if supply feels low or you want a bigger stash.</div></div>
+      <div class="schedule-row"><span class="time-badge">Overnight</span><div class="schedule-text"><strong>One partner does a bottle feed, the other pumps.</strong> Wife pumps at the same time as the bottle feed — ideally the 2–3am session. She can pump and go right back to sleep. This protects supply while giving her a longer pre- and post-sleep stretch.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>Pumping practicalities</div>
+      <ul>
+        <li><strong>Flange size matters more than people realize.</strong> The flange (the funnel part) must fit correctly — nipple should move freely, not the areola. Wrong size = pain, reduced output, and damaged tissue. Most people need a size other than what comes in the box.</li>
+        <li><strong>Output varies a lot and that's normal.</strong> 0.5–2 oz total per session is common in early weeks, even if supply is plentiful. Baby is more efficient than the pump.</li>
+        <li><strong>Wash pump parts after every use</strong> — or keep them in a sealed bag in the fridge between sessions (up to 24 hrs) to save time overnight.</li>
+        <li><strong>Hospital-grade pumps are more powerful.</strong> They can be rented — worth it in the early weeks especially if trying to establish supply or baby has trouble nursing.</li>
+        <li><strong>Hands-free pumping bras</strong> are life-changing. Lets you pump and do something else at the same time.</li>
+        <li><strong>Stay hydrated while pumping.</strong> Have a large water bottle next to the pump at all times.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot dot-pink"></span>Introducing the bottle — timing matters</div>
+      <ul>
+        <li>Wait until breastfeeding is well-established before introducing a bottle — usually around 3–4 weeks. Too early can cause "nipple confusion" and latch issues.</li>
+        <li>For late preterm babies: your pediatrician or lactation consultant may recommend introducing a bottle sooner if baby is struggling to get enough milk at the breast. Follow their guidance.</li>
+        <li>Have someone other than your wife give the first few bottles — baby may refuse from mom since they know the real thing is right there.</li>
+        <li>Use a slow-flow nipple (size 0 or 1) and pace the feed — hold bottle horizontal, let baby pause and control the flow.</li>
+        <li>If baby refuses a bottle, try different bottle brands/nipple shapes, different temperatures of milk, different holders, or offering when baby is calm but not starving.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot dot-green"></span>Breastmilk storage quick reference</div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+        <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:0.75rem; text-align:center;">
+          <div style="font-size:11px; color:var(--color-text-secondary); margin-bottom:4px;">Room temp</div>
+          <div style="font-size:18px; font-weight:500; color:var(--color-text-primary);">4 hrs</div>
+          <div style="font-size:11px; color:var(--color-text-tertiary);">up to 77°F</div>
+        </div>
+        <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:0.75rem; text-align:center;">
+          <div style="font-size:11px; color:var(--color-text-secondary); margin-bottom:4px;">Refrigerator</div>
+          <div style="font-size:18px; font-weight:500; color:var(--color-text-primary);">4 days</div>
+          <div style="font-size:11px; color:var(--color-text-tertiary);">40°F or colder</div>
+        </div>
+        <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:0.75rem; text-align:center;">
+          <div style="font-size:11px; color:var(--color-text-secondary); margin-bottom:4px;">Freezer</div>
+          <div style="font-size:18px; font-weight:500; color:var(--color-text-primary);">6 mo</div>
+          <div style="font-size:11px; color:var(--color-text-tertiary);">0°F or colder</div>
+        </div>
+      </div>
+      <ul style="margin-top:0.75rem;">
+        <li>Label bags with date and amount. Use oldest milk first.</li>
+        <li>Thaw frozen milk in the fridge overnight or in a warm water bath — never microwave.</li>
+        <li>Once thawed, use within 24 hours. Never refreeze.</li>
+        <li>Once warmed, use within 2 hours or discard.</li>
+        <li>It's normal for refrigerated breastmilk to separate — swirl gently (don't shake) before use.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- DIAPERING -->
+  <div class="section" id="section-diapering">
+    <div class="section-title">Diapering</div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-green"></span>Diaper change — step by step</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Gather everything first.</strong> Clean diaper, wipes, cream if needed. Never leave baby unattended on the changing table.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Open dirty diaper.</strong> Use the front to wipe the biggest mess forward, fold it under. For boys: drape a wipe over the penis immediately.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Wipe thoroughly.</strong> Girls: always front to back. Boys: wipe under the scrotum. Get into all the creases.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Lift and slide.</strong> Grab both ankles gently, lift bottom just enough to swap diapers. Tabs go in the back.</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Fasten snugly.</strong> Two fingers should fit inside the waistband. Fold below the umbilical stump until it falls off.</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-text"><strong>Apply cream if needed.</strong> Thin zinc oxide layer for redness. Barrier cream at each change if prone to rash.</div></div>
+    </div>
+    <div class="alert-box alert-blue"><strong>Nighttime diaper changes:</strong> Do everything in your bedroom — no need to go to the nursery. Keep a changing pad and supplies on your dresser or in a basket by the bassinet. Change first, then feed. Keep lights dim, voices quiet, interaction minimal.</div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>What's normal in the diaper</div>
+      <div style="margin-bottom:8px;">
+        <span class="badge badge-green">Day 1–2: meconium (black/tarry)</span>
+        <span class="badge badge-amber">Day 3–4: transitional (green-brown)</span>
+        <span class="badge badge-green">Day 5+: seedy yellow (breastfed)</span>
+        <span class="badge badge-amber">Formula: tan/yellow-green</span>
+      </div>
+      <ul>
+        <li>Breastfed poop ranges from mustard yellow to green — very normal</li>
+        <li>Formula-fed poop is thicker and darker</li>
+        <li>Newborns may poop after every feed or go several days — both can be normal</li>
+        <li>Red blood, white/chalky, or black after meconium phase = call pediatrician</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-blue"></span>Umbilical cord stump care</div>
+      <ul>
+        <li>Keep it clean and dry — fold diaper waistband below it</li>
+        <li>Sponge baths only until it falls off (1–3 weeks)</li>
+        <li>Don't pull it off — it falls off on its own</li>
+        <li>A little dried blood when it falls off is normal</li>
+        <li>Call the doctor if: base is red and warm, yellow discharge with odor, or still on after 3 weeks</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLEEP -->
+  <div class="section" id="section-sleep">
+    <div class="section-title">Sleep & soothing</div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-green"></span>Safe sleep — non-negotiable rules</div>
+      <ul>
+        <li><strong>Back to sleep, every time</strong> — for naps and night</li>
+        <li><strong>Firm, flat surface</strong> — crib or bassinet with firm mattress and tight-fitting sheet only</li>
+        <li><strong>Nothing in the sleep space</strong> — no pillows, blankets, bumpers, or toys</li>
+        <li><strong>Room sharing is great</strong> — bassinet next to your bed. Avoid bed-sharing.</li>
+        <li><strong>Room temperature:</strong> 68–72°F</li>
+        <li>Pacifier at sleep time can help — offer after breastfeeding is established (~3–4 weeks)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-purple"></span>The 5 S's — soothing a crying baby</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Swaddle.</strong> Snug wrap, arms in. Calms the startle reflex. Stop at ~2 months or when rolling begins.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Side/Stomach position (in arms).</strong> Hold on their side against your chest. Always back for sleep.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Shush.</strong> Loud white noise — louder than you'd think. Right next to their ear or use a machine.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Swing.</strong> Gentle rhythmic motion — rock, bounce, sway. Support the head.</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Suck.</strong> Breastfeeding, clean finger, or pacifier. Deep sucking is calming.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-coral"></span>Why is baby crying? Quick checklist</div>
+      <ul>
+        <li>Hungry? (most common) — try feeding even if recently fed</li>
+        <li>Diaper needs changing?</li>
+        <li>Too hot or cold? (check back of neck)</li>
+        <li>Overtired?</li>
+        <li>Gassy? Try bicycle legs, gentle clockwise tummy massage</li>
+        <li>Needs to be held?</li>
+        <li>Overstimulated? Try dimmer light, quiet, swaddle</li>
+        <li>Inconsolable for &gt;2 hours or something seems off — call the pediatrician</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BATHING -->
+  <div class="section" id="section-bathing">
+    <div class="section-title">Bathing & general care</div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-blue"></span>Sponge bath (until cord falls off)</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Gather everything first.</strong> Warm water (~100°F), soft washcloth, gentle baby soap, towel. Keep baby warm — expose only the area you're washing.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Face first, no soap.</strong> Wipe eyes inner to outer corner. Nose and ears: wipe exterior only.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Move down the body.</strong> Neck folds, armpits, chest, belly, arms, hands. Keep the cord stump dry.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Genitals and bottom.</strong> Front to back for girls. Uncircumcised boys: don't retract foreskin. Circumcised: follow hospital instructions.</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Dry thoroughly.</strong> Pat dry, especially skin folds. No talcum powder.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>Common newborn skin things (usually normal)</div>
+      <ul>
+        <li><strong>Milia:</strong> tiny white bumps on nose/chin — resolve on their own</li>
+        <li><strong>Baby acne:</strong> peaks around 3–4 weeks, clears itself</li>
+        <li><strong>Peeling skin:</strong> normal first 1–2 weeks, especially hands and feet</li>
+        <li><strong>Jaundice:</strong> yellowish tint to skin/eyes — common, monitor and report to pediatrician</li>
+        <li><strong>Cradle cap:</strong> flaky scalp around 2–3 weeks — gentle oil and soft brush helps</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-purple"></span>Taking temperature</div>
+      <ul>
+        <li>Rectal thermometer is most accurate for newborns</li>
+        <li>Coat tip with petroleum jelly, insert 1/2 inch, hold 60 seconds</li>
+        <li>Normal: 97–100.4°F (36.1–38°C)</li>
+        <li>Fever in baby under 3 months (&gt;100.4°F) = call doctor immediately</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- POSTPARTUM -->
+  <div class="section" id="section-postpartum">
+    <div class="section-title">Postpartum care (for your wife)</div>
+    <div class="alert-box alert-pink">This section is for your wife's recovery. The first 6 weeks postpartum are a major physical healing period — just as important as caring for baby.</div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-pink"></span>Physical recovery — what to expect</div>
+      <ul>
+        <li><strong>Lochia (postpartum bleeding):</strong> Normal for up to 6 weeks. Starts heavy and red, lightens gradually. Soaking a pad in under an hour or passing large clots = call OB.</li>
+        <li><strong>Perineal soreness:</strong> Ice packs first 24hrs, then sitz baths 2–3x daily. Peri bottle with warm water after each bathroom use. Witch hazel pads help swelling.</li>
+        <li><strong>C-section incision:</strong> Keep dry and clean. No lifting heavier than baby. Watch for redness, swelling, or discharge.</li>
+        <li><strong>Afterpains:</strong> Uterine cramping, especially during breastfeeding. Worst days 1–3. Ibuprofen (if cleared by OB) helps.</li>
+        <li><strong>Swelling:</strong> Legs and feet may be puffier than during pregnancy at first. Elevate feet when possible.</li>
+        <li><strong>Night sweats:</strong> Very common as hormones shift. Keep a towel nearby.</li>
+        <li><strong>Constipation:</strong> Stool softeners often prescribed. Stay hydrated, eat fiber. Don't strain.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-purple"></span>Mental health — please read this</div>
+      <ul>
+        <li><strong>Baby blues:</strong> Mood swings, tearfulness, anxiety in first 1–2 weeks. Affects up to 80% of new mothers. Usually resolves on its own.</li>
+        <li><strong>Postpartum depression (PPD):</strong> Persistent sadness, numbness, or disconnection beyond 2 weeks — or severe at any point. Very treatable. She should tell her OB.</li>
+        <li><strong>Postpartum anxiety:</strong> Racing thoughts, constant worry, inability to rest. Also very treatable.</li>
+        <li><strong>Postpartum psychosis (rare but urgent):</strong> Hallucinations, confusion, extreme behavior changes — seek emergency help immediately.</li>
+        <li>As her partner: check in often, make it safe to say "I'm struggling." Postpartum depression affects all parents — you too.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-coral"></span>Nutrition & hydration for mom</div>
+      <ul>
+        <li>Breastfeeding = ~500 extra calories/day needed. Do not restrict food.</li>
+        <li>Drink water constantly — at least 8–10 glasses/day. Keep a large bottle at every feeding spot.</li>
+        <li>Continue prenatal vitamins while breastfeeding</li>
+        <li>Iron-rich foods help recovery: leafy greens, lean meat, lentils, fortified cereals</li>
+        <li>Caffeine: limit to ~200mg/day (about one 12oz coffee)</li>
+        <li>Alcohol: wait 2 hours per drink before breastfeeding, or pump and dump</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-blue"></span>Activity & rest</div>
+      <ul>
+        <li>No strenuous exercise until 6-week OB clearance (8–12 weeks for c-section)</li>
+        <li>Gentle walks are encouraged once comfortable</li>
+        <li>No sex until 6-week OB clearance</li>
+        <li>No baths or swimming until postpartum bleeding has stopped</li>
+        <li>Pelvic floor exercises (Kegels) can begin right away</li>
+        <li>Sleep when baby sleeps — protect her rest above almost everything else</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="section" id="section-tips">
+    <div class="section-title">Tips & tricks</div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-green"></span>Feeding tips</div>
+      <div class="tip-row"><div class="tip-icon" style="background:#E1F5EE; color:#0F6E56;">1</div><div class="tip-body"><strong>The "dream feed"</strong> Feed baby right before you go to sleep (10–11pm) without fully waking them. Can extend the first stretch of nighttime sleep.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:#E1F5EE; color:#0F6E56;">2</div><div class="tip-body"><strong>Skin-to-skin for latch trouble</strong> Strip both mom and baby down — contact stimulates feeding instincts and helps with latch.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:#E1F5EE; color:#0F6E56;">3</div><div class="tip-body"><strong>Football hold for engorgement</strong> Tuck baby under your arm for better latch control when breasts are very full.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:#E1F5EE; color:#0F6E56;">4</div><div class="tip-body"><strong>Hand-express before latching</strong> If very engorged, express a little first to soften the areola so baby can latch more easily.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-purple"></span>Sleep tips</div>
+      <div class="tip-row"><div class="tip-icon" style="background:#EEEDFE; color:#534AB7;">1</div><div class="tip-body"><strong>White noise louder than you think</strong> The womb is as loud as a vacuum cleaner. A white noise machine at ~65 decibels can be transformative.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:#EEEDFE; color:#534AB7;">2</div><div class="tip-body"><strong>Catch the sleep window</strong> Put baby down at the first yawn or eye-rub. An overtired baby fights sleep hard.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:#EEEDFE; color:#534AB7;">3</div><div class="tip-body"><strong>Warm the bassinet sheet</strong> A heating pad on the sheet for a few minutes before transfer (remove before laying baby down) prevents the cold-sheet startle wake.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:#EEEDFE; color:#534AB7;">4</div><div class="tip-body"><strong>Hold upright after feeds</strong> Keep baby upright for 15–20 minutes before putting down. Reduces spit-up and nighttime discomfort.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>Survival tips for parents</div>
+      <div class="tip-row"><div class="tip-icon" style="background:#FAEEDA; color:#854F0B;">1</div><div class="tip-body"><strong>Set up feeding stations</strong> Snacks, water bottle, phone charger, burp cloth, remote — at every place you regularly feed. You'll be there a lot.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:#FAEEDA; color:#854F0B;">2</div><div class="tip-body"><strong>Accept every offer of help</strong> When someone asks, say "Bring a meal" or "Come hold the baby while I shower." Specific asks get results.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:#FAEEDA; color:#854F0B;">3</div><div class="tip-body"><strong>Double-diaper at night</strong> Put two diapers on at bedtime to absorb more and reduce the chance of a 3am blowout.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:#FAEEDA; color:#854F0B;">4</div><div class="tip-body"><strong>Onesie snaps go down, not up</strong> The envelope fold at the neck lets you pull a blowout outfit down off baby instead of over their head.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:#FAEEDA; color:#854F0B;">5</div><div class="tip-body"><strong>It's okay to put baby down</strong> If overwhelmed, put baby in their safe sleep space and step away for a few minutes. A crying baby in a safe place is okay.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-pink"></span>Late preterm baby tips (37 weeks)</div>
+      <ul>
+        <li>Late preterm babies are often sleepier — wake them to feed every 2–3 hours. Don't let them sleep through feeds.</li>
+        <li>They tire at the breast faster — shorter, more frequent feeds are normal.</li>
+        <li>More prone to jaundice — watch for yellowing of skin and eyes, especially days 3–5.</li>
+        <li>May take longer to establish breastfeeding — a lactation consultant is your best tool.</li>
+        <li>First pediatrician visit: 2–3 days after discharge. Book before you leave the hospital.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="section" id="section-resources">
+    <div class="section-title">Resources</div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-pink"></span>Breastfeeding support</div>
+      <a class="resource-link" href="https://www.llli.org" target="_blank"><span class="resource-cat rc-bf">Breastfeeding</span><div class="resource-text"><div class="resource-name">La Leche League International (llli.org)</div><div class="resource-desc">Peer support, local groups, and a warmline for breastfeeding questions at any hour.</div></div></a>
+      <a class="resource-link" href="https://www.cdc.gov/breastfeeding" target="_blank"><span class="resource-cat rc-bf">Breastfeeding</span><div class="resource-text"><div class="resource-name">CDC Breastfeeding resources</div><div class="resource-desc">Guides on pumping, storage, returning to work, and support by state.</div></div></a>
+      <a class="resource-link" href="https://www.ibclc.org/find-an-ibclc/" target="_blank"><span class="resource-cat rc-bf">Breastfeeding</span><div class="resource-text"><div class="resource-name">Find a lactation consultant (ibclc.org)</div><div class="resource-desc">Directory of board-certified IBCLCs near you. Many accept insurance.</div></div></a>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-blue"></span>Baby health & development</div>
+      <a class="resource-link" href="https://www.healthychildren.org" target="_blank"><span class="resource-cat rc-baby">Baby care</span><div class="resource-text"><div class="resource-name">HealthyChildren.org (American Academy of Pediatrics)</div><div class="resource-desc">The gold standard for pediatric guidance — feeding, sleep, development, vaccines, and when to call.</div></div></a>
+      <a class="resource-link" href="https://www.cdc.gov/safe-sleep" target="_blank"><span class="resource-cat rc-baby">Safe sleep</span><div class="resource-text"><div class="resource-name">CDC Safe Sleep guidelines</div><div class="resource-desc">The ABCs of safe sleep: Alone, Back, Crib. Clear, evidence-based guidance.</div></div></a>
+      <a class="resource-link" href="https://www.zerotothree.org" target="_blank"><span class="resource-cat rc-baby">Development</span><div class="resource-text"><div class="resource-name">Zero to Three (zerotothree.org)</div><div class="resource-desc">Baby brain development, language, bonding, and play — backed by research, written for parents.</div></div></a>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-purple"></span>Postpartum mental health</div>
+      <a class="resource-link" href="https://www.postpartum.net" target="_blank"><span class="resource-cat rc-mh">Mental health</span><div class="resource-text"><div class="resource-name">Postpartum Support International (postpartum.net)</div><div class="resource-desc">Helpline, peer support, and provider directory for PPD, anxiety, and psychosis. Helpline: 1-800-944-4773.</div></div></a>
+      <a class="resource-link" href="https://988lifeline.org" target="_blank"><span class="resource-cat rc-mh">Crisis support</span><div class="resource-text"><div class="resource-name">988 Suicide & Crisis Lifeline</div><div class="resource-desc">Call or text 988. Available 24/7 for any mental health crisis, including postpartum.</div></div></a>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-green"></span>General parenting</div>
+      <a class="resource-link" href="https://www.whattoexpect.com" target="_blank"><span class="resource-cat rc-general">General</span><div class="resource-text"><div class="resource-name">What to Expect (whattoexpect.com)</div><div class="resource-desc">Week-by-week baby development, community forums, and practical guides.</div></div></a>
+      <a class="resource-link" href="https://www.takingcarababies.com" target="_blank"><span class="resource-cat rc-general">Sleep</span><div class="resource-text"><div class="resource-name">Taking Cara Babies (takingcarababies.com)</div><div class="resource-desc">Age-appropriate sleep courses by a neonatal nurse. Newborn course is free.</div></div></a>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>In an emergency</div>
+      <div style="font-size:13px; color: var(--color-text-secondary); line-height:1.9;">
+        <strong style="color:var(--color-text-primary);">Poison Control:</strong> 1-800-222-1222 (US, 24/7)<br>
+        <strong style="color:var(--color-text-primary);">Postpartum Support Intl:</strong> 1-800-944-4773<br>
+        <strong style="color:var(--color-text-primary);">Crisis line:</strong> Call or text 988<br>
+        <strong style="color:var(--color-text-primary);">Emergency:</strong> 911
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERTS -->
+  <div class="section" id="section-alerts">
+    <div class="section-title">When to call / seek help</div>
+    <div class="alert-box alert-red"><strong>Call 911 or go to the ER immediately if:</strong> baby stops breathing, turns blue/purple around mouth, is unresponsive or limp, has a seizure, or has a major injury.</div>
+    <div class="alert-box alert-red"><strong>Call the pediatrician immediately if:</strong> fever of 100.4°F / 38°C or higher in a baby under 3 months, temperature below 97°F, baby not waking to feed after 4+ hours, fewer than 6 wet diapers after day 4, blood in stool, jaundice deepening, persistent inconsolable crying, difficulty breathing, or umbilical cord area is red, swollen, or has foul discharge.</div>
+    <div class="alert-box alert-amber"><strong>Call during business hours if:</strong> forceful/consistent vomiting, no bowel movement for 5+ days, spreading rash, white patches in mouth (thrush), or signs of mastitis.</div>
+    <div class="alert-box alert-pink"><strong>Call OB for mom if:</strong> heavy bleeding (soaking a pad in under an hour), large clots, fever over 100.4°F, foul-smelling discharge, incision site separating or infected, inability to urinate, or symptoms of postpartum depression or anxiety.</div>
+    <div class="alert-box alert-green"><strong>Appointments to book:</strong> Pediatrician at 2–3 days post-discharge (late preterm), 2 weeks, and 1 month. OB for mom at 6 weeks (or 2 weeks for c-section). Book before leaving the hospital.</div>
+  </div>
+</div>
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  el.classList.add('active');
+}
+</script>
