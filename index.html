@@ -1,85 +1,493 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Parent Reference Guide — First Weeks Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  .guide { font-family: var(--font-sans); color: var(--color-text-primary); max-width: 680px; padding: 0 0 2rem; }
-  .hero { background: #1a3a2a; border-radius: var(--border-radius-lg); padding: 2rem 2rem 1.5rem; margin-bottom: 1.5rem; color: #fff; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; top: -30px; right: -30px; width: 180px; height: 180px; border-radius: 50%; border: 40px solid rgba(255,255,255,0.05); }
-  .hero-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8fbd9f; margin-bottom: 0.5rem; }
-  .hero h1 { font-size: 24px; font-weight: 500; color: #fff; margin-bottom: 0.4rem; line-height: 1.3; }
-  .hero p { font-size: 13px; color: #a8c8b8; line-height: 1.6; }
-  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; }
-  .tab { padding: 7px 13px; border-radius: 20px; border: 0.5px solid var(--color-border-secondary); font-size: 12px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.15s; white-space: nowrap; }
-  .tab.active { background: #1a3a2a; color: #fff; border-color: #1a3a2a; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f3;
+    --bg-tertiary: #efede8;
+    --text-primary: #1a1a18;
+    --text-secondary: #5a5a57;
+    --text-tertiary: #9a9a96;
+    --border-light: rgba(26,26,24,0.12);
+    --border-mid: rgba(26,26,24,0.22);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --green-bg: #E1F5EE;
+    --green-text: #0F6E56;
+    --green-dark: #04342C;
+    --blue-bg: #E6F1FB;
+    --blue-text: #185FA5;
+    --blue-dark: #042C53;
+    --amber-bg: #FAEEDA;
+    --amber-text: #854F0B;
+    --amber-dark: #412402;
+    --red-bg: #FCEBEB;
+    --red-text: #A32D2D;
+    --red-dark: #501313;
+    --purple-bg: #EEEDFE;
+    --purple-text: #534AB7;
+    --purple-dark: #26215C;
+    --pink-bg: #FBEAF0;
+    --pink-text: #993556;
+    --pink-dark: #4B1528;
+    --coral-bg: #FAECE7;
+    --coral-text: #993C1D;
+    --hero-bg: #1a3a2a;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: #1e1e1c;
+      --bg-secondary: #2a2a28;
+      --bg-tertiary: #242422;
+      --text-primary: #f0ede8;
+      --text-secondary: #a8a8a4;
+      --text-tertiary: #6a6a66;
+      --border-light: rgba(240,237,232,0.10);
+      --border-mid: rgba(240,237,232,0.20);
+      --green-bg: #085041;
+      --green-text: #9FE1CB;
+      --green-dark: #E1F5EE;
+      --blue-bg: #0C447C;
+      --blue-text: #B5D4F4;
+      --blue-dark: #E6F1FB;
+      --amber-bg: #633806;
+      --amber-text: #FAC775;
+      --amber-dark: #FAEEDA;
+      --red-bg: #791F1F;
+      --red-text: #F7C1C1;
+      --red-dark: #FCEBEB;
+      --purple-bg: #3C3489;
+      --purple-text: #CECBF6;
+      --purple-dark: #EEEDFE;
+      --pink-bg: #72243E;
+      --pink-text: #F4C0D1;
+      --pink-dark: #FBEAF0;
+      --coral-bg: #712B13;
+      --coral-text: #F5C4B3;
+    }
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--hero-bg);
+    border-radius: var(--radius-lg);
+    padding: 2rem 2rem 1.75rem;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 45px solid rgba(255,255,255,0.05);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8fbd9f;
+    margin-bottom: 0.5rem;
+  }
+  .hero h1 {
+    font-size: 26px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+  .hero p {
+    font-size: 13px;
+    color: #a8c8b8;
+    line-height: 1.6;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem;
+    border: 0.5px solid var(--border-light);
+  }
+  .tab {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border-mid);
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text-secondary);
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .tab:hover { background: var(--bg-secondary); }
+  .tab.active {
+    background: var(--hero-bg);
+    color: #fff;
+    border-color: var(--hero-bg);
+  }
+
+  /* SECTIONS */
   .section { display: none; }
   .section.active { display: block; }
-  .section-title { font-size: 18px; font-weight: 500; margin-bottom: 1.25rem; color: var(--color-text-primary); padding-bottom: 0.75rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
-  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
-  .card-title { font-size: 14px; font-weight: 500; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .dot-green { background: #1D9E75; } .dot-amber { background: #BA7517; } .dot-blue { background: #378ADD; } .dot-coral { background: #D85A30; } .dot-purple { background: #7F77DD; } .dot-pink { background: #D4537E; }
-  .card p, .card li { font-size: 13px; line-height: 1.7; color: var(--color-text-secondary); }
-  .card ul { padding-left: 1.25rem; }
-  .card li { margin-bottom: 4px; }
-  .schedule-row { display: grid; grid-template-columns: 90px 1fr; gap: 0 1rem; align-items: start; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
-  .schedule-row:last-child { border-bottom: none; }
-  .time-badge { font-size: 11px; font-weight: 500; color: #0F6E56; background: #E1F5EE; border-radius: 4px; padding: 3px 8px; white-space: nowrap; margin-top: 2px; display: inline-block; }
-  .schedule-text { font-size: 13px; line-height: 1.6; color: var(--color-text-secondary); }
-  .schedule-text strong { color: var(--color-text-primary); font-weight: 500; }
-  .alert-box { border-left: 3px solid; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 0.9rem 1rem; margin-bottom: 1rem; font-size: 13px; line-height: 1.6; }
-  .alert-red { border-color: #E24B4A; background: #FCEBEB; color: #501313; }
-  .alert-amber { border-color: #BA7517; background: #FAEEDA; color: #412402; }
-  .alert-green { border-color: #1D9E75; background: #E1F5EE; color: #04342C; }
-  .alert-pink { border-color: #D4537E; background: #FBEAF0; color: #4B1528; }
-  .alert-blue { border-color: #378ADD; background: #E6F1FB; color: #042C53; }
-  .alert-purple { border-color: #7F77DD; background: #EEEDFE; color: #26215C; }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-  .stat-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem; text-align: center; }
-  .stat-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
-  .stat-value { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
-  .stat-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
-  .step { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
-  .step:last-child { border-bottom: none; }
-  .step-num { width: 24px; height: 24px; border-radius: 50%; background: #1a3a2a; color: #fff; font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .step-text { font-size: 13px; line-height: 1.6; color: var(--color-text-secondary); }
-  .step-text strong { color: var(--color-text-primary); font-weight: 500; display: block; margin-bottom: 1px; }
-  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-right: 4px; margin-bottom: 4px; font-weight: 500; }
-  .badge-green { background: #E1F5EE; color: #0F6E56; }
-  .badge-amber { background: #FAEEDA; color: #854F0B; }
-  .badge-red { background: #FCEBEB; color: #A32D2D; }
-  .badge-pink { background: #FBEAF0; color: #993556; }
-  .badge-blue { background: #E6F1FB; color: #185FA5; }
-  .badge-purple { background: #EEEDFE; color: #534AB7; }
-  .resource-link { display: flex; align-items: flex-start; gap: 10px; padding: 12px 0; border-bottom: 0.5px solid var(--color-border-tertiary); text-decoration: none; }
-  .resource-link:last-child { border-bottom: none; }
-  .resource-cat { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; white-space: nowrap; margin-top: 2px; }
-  .rc-bf { background: #FBEAF0; color: #993556; } .rc-health { background: #E6F1FB; color: #185FA5; } .rc-mh { background: #EEEDFE; color: #534AB7; } .rc-baby { background: #E1F5EE; color: #0F6E56; } .rc-general { background: #F1EFE8; color: #5F5E5A; }
-  .resource-text { flex: 1; }
-  .resource-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
-  .resource-desc { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; line-height: 1.5; }
-  .tip-row { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
-  .tip-row:last-child { border-bottom: none; }
-  .tip-icon { width: 28px; height: 28px; border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; font-weight: 500; }
-  .tip-body { font-size: 13px; line-height: 1.6; color: var(--color-text-secondary); }
-  .tip-body strong { color: var(--color-text-primary); font-weight: 500; display: block; margin-bottom: 2px; }
-  .nap-option { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
-  .nap-option:last-child { border-bottom: none; }
-  .nap-label { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 4px; white-space: nowrap; margin-top: 2px; flex-shrink: 0; min-width: 80px; text-align: center; }
-  .nap-text { font-size: 13px; line-height: 1.6; color: var(--color-text-secondary); }
-  .nap-text strong { color: var(--color-text-primary); font-weight: 500; }
-  .mode-card { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.1rem; margin-bottom: 0.75rem; }
-  .mode-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.6rem; }
-  .mode-pill { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 10px; }
-  .mode-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
-  .mode-body { font-size: 13px; line-height: 1.7; color: var(--color-text-secondary); }
-  .mode-body li { margin-bottom: 3px; }
-  .flow-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); flex-wrap: wrap; }
-  .flow-row:last-child { border-bottom: none; }
-  .flow-pill { font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 12px; white-space: nowrap; }
-  .flow-arrow { font-size: 14px; color: var(--color-text-tertiary); }
-  .flow-note { font-size: 12px; color: var(--color-text-secondary); flex: 1; min-width: 160px; }
-</style>
 
-<div class="guide">
+  .section-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+    padding-bottom: 0.75rem;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-green { background: #1D9E75; }
+  .dot-amber { background: #BA7517; }
+  .dot-blue { background: #378ADD; }
+  .dot-coral { background: #D85A30; }
+  .dot-purple { background: #7F77DD; }
+  .dot-pink { background: #D4537E; }
+
+  .card p, .card li {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+  .card ul { padding-left: 1.25rem; }
+  .card li { margin-bottom: 5px; }
+  .card li strong, .card p strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* ALERT BOXES */
+  .alert-box {
+    border-left: 3px solid;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: 0.9rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .alert-box strong { font-weight: 500; }
+  .alert-green { border-color: #1D9E75; background: var(--green-bg); color: var(--green-dark); }
+  .alert-red { border-color: #E24B4A; background: var(--red-bg); color: var(--red-dark); }
+  .alert-amber { border-color: #BA7517; background: var(--amber-bg); color: var(--amber-dark); }
+  .alert-pink { border-color: #D4537E; background: var(--pink-bg); color: var(--pink-dark); }
+  .alert-blue { border-color: #378ADD; background: var(--blue-bg); color: var(--blue-dark); }
+  .alert-purple { border-color: #7F77DD; background: var(--purple-bg); color: var(--purple-dark); }
+
+  /* STAT GRID */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .stat-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    text-align: center;
+  }
+  .stat-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+  .stat-value { font-size: 22px; font-weight: 500; color: var(--text-primary); }
+  .stat-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+  /* SCHEDULE ROWS */
+  .schedule-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 0 1rem;
+    align-items: start;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .schedule-row:last-child { border-bottom: none; }
+  .time-badge {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--green-text);
+    background: var(--green-bg);
+    border-radius: 4px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    margin-top: 2px;
+    display: inline-block;
+  }
+  .schedule-text { font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+  .schedule-text strong { color: var(--text-primary); font-weight: 500; }
+
+  /* STEPS */
+  .step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--hero-bg);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-text { font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+  .step-text strong {
+    color: var(--text-primary);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 1px;
+  }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .badge-green { background: var(--green-bg); color: var(--green-text); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber-text); }
+  .badge-red { background: var(--red-bg); color: var(--red-text); }
+  .badge-pink { background: var(--pink-bg); color: var(--pink-text); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue-text); }
+  .badge-purple { background: var(--purple-bg); color: var(--purple-text); }
+
+  /* NAP OPTIONS */
+  .nap-option {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .nap-option:last-child { border-bottom: none; }
+  .nap-label {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+    min-width: 80px;
+    text-align: center;
+  }
+  .nap-text { font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+  .nap-text strong { color: var(--text-primary); font-weight: 500; }
+
+  /* TIP ROWS */
+  .tip-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .tip-row:last-child { border-bottom: none; }
+  .tip-icon {
+    width: 28px; height: 28px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .tip-body { font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+  .tip-body strong {
+    color: var(--text-primary);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* MODE CARDS (pumping) */
+  .mode-card {
+    border: 0.5px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+  .mode-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.6rem;
+  }
+  .mode-pill {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .mode-title { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+  .mode-body { font-size: 13px; line-height: 1.7; color: var(--text-secondary); }
+
+  /* FLOW ROWS */
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 0.5px solid var(--border-light);
+    flex-wrap: wrap;
+  }
+  .flow-row:last-child { border-bottom: none; }
+  .flow-pill {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+  .flow-arrow { font-size: 14px; color: var(--text-tertiary); }
+  .flow-note { font-size: 12px; color: var(--text-secondary); flex: 1; min-width: 160px; }
+
+  /* STORAGE GRID */
+  .storage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 0.75rem;
+  }
+  .storage-cell {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+    text-align: center;
+  }
+  .storage-cell .s-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+  .storage-cell .s-val { font-size: 18px; font-weight: 500; color: var(--text-primary); }
+  .storage-cell .s-sub { font-size: 11px; color: var(--text-tertiary); }
+
+  /* RESOURCE LINKS */
+  .resource-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--border-light);
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.1s;
+  }
+  .resource-link:hover { opacity: 0.8; }
+  .resource-link:last-child { border-bottom: none; }
+  .resource-cat {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .rc-bf { background: var(--pink-bg); color: var(--pink-text); }
+  .rc-baby { background: var(--green-bg); color: var(--green-text); }
+  .rc-mh { background: var(--purple-bg); color: var(--purple-text); }
+  .rc-general { background: var(--bg-secondary); color: var(--text-secondary); }
+  .resource-name { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+  .resource-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; line-height: 1.5; }
+
+  /* EMERGENCY BOX */
+  .emergency-info {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.9;
+  }
+  .emergency-info strong { color: var(--text-primary); font-weight: 500; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    margin-top: 2.5rem;
+    font-size: 12px;
+    color: var(--text-tertiary);
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 1rem 0.75rem 2rem; }
+    .stat-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .storage-grid { grid-template-columns: 1fr 1fr 1fr; }
+    .hero h1 { font-size: 22px; }
+    .schedule-row { grid-template-columns: 75px 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
   <div class="hero">
     <div class="hero-label">New parent reference guide</div>
     <h1>Your first weeks home with baby</h1>
@@ -87,23 +495,23 @@
   </div>
 
   <div class="tabs">
-    <div class="tab active" onclick="showTab('schedule', this)">Daily rhythm</div>
-    <div class="tab" onclick="showTab('feeding', this)">Feeding</div>
-    <div class="tab" onclick="showTab('pumping', this)">Pumping & bottles</div>
-    <div class="tab" onclick="showTab('diapering', this)">Diapering</div>
-    <div class="tab" onclick="showTab('sleep', this)">Sleep & soothing</div>
-    <div class="tab" onclick="showTab('bathing', this)">Bathing & care</div>
-    <div class="tab" onclick="showTab('postpartum', this)">Postpartum (for wife)</div>
-    <div class="tab" onclick="showTab('tips', this)">Tips & tricks</div>
-    <div class="tab" onclick="showTab('resources', this)">Resources</div>
-    <div class="tab" onclick="showTab('alerts', this)">When to call</div>
+    <button class="tab active" onclick="showTab('schedule', this)">Daily rhythm</button>
+    <button class="tab" onclick="showTab('feeding', this)">Feeding</button>
+    <button class="tab" onclick="showTab('pumping', this)">Pumping & bottles</button>
+    <button class="tab" onclick="showTab('diapering', this)">Diapering</button>
+    <button class="tab" onclick="showTab('sleep', this)">Sleep & soothing</button>
+    <button class="tab" onclick="showTab('bathing', this)">Bathing & care</button>
+    <button class="tab" onclick="showTab('postpartum', this)">Postpartum (for wife)</button>
+    <button class="tab" onclick="showTab('tips', this)">Tips & tricks</button>
+    <button class="tab" onclick="showTab('resources', this)">Resources</button>
+    <button class="tab" onclick="showTab('alerts', this)">When to call</button>
   </div>
 
-  <!-- SCHEDULE -->
+  <!-- ===== SCHEDULE ===== -->
   <div class="section active" id="section-schedule">
     <div class="section-title">The daily rhythm (weeks 1–4)</div>
     <div class="alert-box alert-green">There is no real "schedule" yet — newborns eat, sleep, and repeat every 2–3 hours around the clock. Your job is to respond, not impose a routine.</div>
-    <div class="two-col">
+    <div class="stat-grid">
       <div class="stat-card"><div class="stat-label">Feeding frequency</div><div class="stat-value">8–12x</div><div class="stat-sub">per day</div></div>
       <div class="stat-card"><div class="stat-label">Sleep per day</div><div class="stat-value">16–18h</div><div class="stat-sub">in 2–4hr stretches</div></div>
       <div class="stat-card"><div class="stat-label">Wet diapers</div><div class="stat-value">6+</div><div class="stat-sub">after day 4–5</div></div>
@@ -119,10 +527,10 @@
     <div class="card">
       <div class="card-title"><span class="dot dot-blue"></span>Daytime naps — you don't have to stay in the bedroom</div>
       <div class="alert-box alert-blue" style="margin-bottom:1rem;">Baby comes with you — you are not sequestered to the bedroom during naps. No monitor needed when you're in the same room. A monitor becomes relevant later when baby moves to their own nursery.</div>
-      <div class="nap-option"><span class="nap-label" style="background:#E1F5EE; color:#0F6E56;">Move it</span><div class="nap-text"><strong>Wheel the bassinet to wherever you are.</strong> Many bassinets are on wheels for exactly this reason — living room, kitchen, wherever.</div></div>
-      <div class="nap-option"><span class="nap-label" style="background:#E6F1FB; color:#185FA5;">Second spot</span><div class="nap-text"><strong>Keep a pack-n-play in your main living area.</strong> A dedicated daytime nap spot means you never have to move the bassinet back and forth.</div></div>
-      <div class="nap-option"><span class="nap-label" style="background:#EEEDFE; color:#534AB7;">Babywear</span><div class="nap-text"><strong>Use a soft carrier or wrap.</strong> Baby sleeps on you, hands-free. Follow safe babywearing: face always visible, chin off chest, airways clear.</div></div>
-      <div class="nap-option"><span class="nap-label" style="background:#FAEEDA; color:#854F0B;">Hold them</span><div class="nap-text"><strong>Contact naps are completely fine in the early weeks.</strong> Not a bad habit yet. The closeness is good for both of you.</div></div>
+      <div class="nap-option"><span class="nap-label" style="background:var(--green-bg); color:var(--green-text);">Move it</span><div class="nap-text"><strong>Wheel the bassinet to wherever you are.</strong> Many bassinets are on wheels for exactly this reason — living room, kitchen, wherever.</div></div>
+      <div class="nap-option"><span class="nap-label" style="background:var(--blue-bg); color:var(--blue-text);">Second spot</span><div class="nap-text"><strong>Keep a pack-n-play in your main living area.</strong> A dedicated daytime nap spot means you never have to move the bassinet back and forth.</div></div>
+      <div class="nap-option"><span class="nap-label" style="background:var(--purple-bg); color:var(--purple-text);">Babywear</span><div class="nap-text"><strong>Use a soft carrier or wrap.</strong> Baby sleeps on you, hands-free. Follow safe babywearing: face always visible, chin off chest, airways clear.</div></div>
+      <div class="nap-option"><span class="nap-label" style="background:var(--amber-bg); color:var(--amber-text);">Hold them</span><div class="nap-text"><strong>Contact naps are completely fine in the early weeks.</strong> Not a bad habit yet. The closeness is good for both of you.</div></div>
     </div>
     <div class="card">
       <div class="card-title"><span class="dot dot-purple"></span>Your role as support partner</div>
@@ -135,7 +543,7 @@
     </div>
   </div>
 
-  <!-- FEEDING -->
+  <!-- ===== FEEDING ===== -->
   <div class="section" id="section-feeding">
     <div class="section-title">Feeding</div>
     <div class="card">
@@ -165,97 +573,78 @@
     </div>
   </div>
 
-  <!-- PUMPING & BOTTLES -->
+  <!-- ===== PUMPING ===== -->
   <div class="section" id="section-pumping">
     <div class="section-title">Pumping & bottles — how it all fits together</div>
-
-    <div class="alert-box alert-purple">The goal in the early weeks is to establish and protect milk supply. That means milk needs to be removed — by nursing or pumping — roughly every 2–3 hours. Long gaps send a signal to produce less.</div>
-
+    <div class="alert-box alert-purple">The goal in the early weeks is to establish and protect milk supply. Milk needs to be removed — by nursing or pumping — roughly every 2–3 hours. Long gaps send a signal to produce less.</div>
     <div class="card">
       <div class="card-title"><span class="dot dot-green"></span>The three modes</div>
       <div class="mode-card">
-        <div class="mode-header"><span class="mode-pill" style="background:#E1F5EE; color:#0F6E56;">Direct nursing</span><span class="mode-title">The foundation</span></div>
+        <div class="mode-header"><span class="mode-pill" style="background:var(--green-bg); color:var(--green-text);">Direct nursing</span><span class="mode-title">The foundation</span></div>
         <div class="mode-body">The default, whenever possible. Baby is better at extracting milk than any pump, and the hormonal feedback loop works best with direct feeding. Building supply starts here. Do this as the primary method for all feeds you can.</div>
       </div>
       <div class="mode-card">
-        <div class="mode-header"><span class="mode-pill" style="background:#E6F1FB; color:#185FA5;">Pumping</span><span class="mode-title">Builds supply & creates a stash</span></div>
+        <div class="mode-header"><span class="mode-pill" style="background:var(--blue-bg); color:var(--blue-text);">Pumping</span><span class="mode-title">Builds supply & creates a stash</span></div>
         <div class="mode-body">Pump to build a freezer stash, relieve engorgement, maintain supply when baby can't nurse, or create bottles for a partner to use. Pumping after a nursing session in the early weeks (even if little comes out) signals the body to produce more. Best time to pump: right after the first morning feed — supply is highest then.</div>
       </div>
       <div class="mode-card">
-        <div class="mode-header"><span class="mode-pill" style="background:#FBEAF0; color:#993556;">Bottle of pumped milk</span><span class="mode-title">Buys a sleep stretch</span></div>
+        <div class="mode-header"><span class="mode-pill" style="background:var(--pink-bg); color:var(--pink-text);">Bottle of pumped milk</span><span class="mode-title">Buys a sleep stretch</span></div>
         <div class="mode-body">Lets your wife sleep through one overnight feed while you handle it, or lets other family members feed baby. The key rule: if she skips a nursing session, she should pump at roughly the same time — otherwise supply takes a hit over time.</div>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title"><span class="dot dot-purple"></span>The golden rule: skip a feed = pump at the same time</div>
       <div class="flow-row">
-        <span class="flow-pill" style="background:#FBEAF0; color:#993556;">Wife skips overnight feed</span>
+        <span class="flow-pill" style="background:var(--pink-bg); color:var(--pink-text);">Wife skips overnight feed</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-pill" style="background:#E6F1FB; color:#185FA5;">You bottle-feed baby</span>
+        <span class="flow-pill" style="background:var(--blue-bg); color:var(--blue-text);">You bottle-feed baby</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-pill" style="background:#E1F5EE; color:#0F6E56;">Wife pumps same time</span>
-        <div class="flow-note">She keeps supply up, you both handle the feed, and she gets a longer sleep stretch.</div>
+        <span class="flow-pill" style="background:var(--green-bg); color:var(--green-text);">Wife pumps same time</span>
+        <div class="flow-note">She keeps supply up, you both handle the feed, she gets a longer sleep stretch.</div>
       </div>
       <div class="flow-row">
-        <span class="flow-pill" style="background:#FBEAF0; color:#993556;">Wife skips feed, no pump</span>
+        <span class="flow-pill" style="background:var(--pink-bg); color:var(--pink-text);">Wife skips feed, no pump</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-pill" style="background:#FCEBEB; color:#A32D2D;">Supply starts to dip</span>
-        <div class="flow-note">Over days, skipped sessions without pumping signal the body to make less. Okay occasionally, not as a pattern in early weeks.</div>
+        <span class="flow-pill" style="background:var(--red-bg); color:var(--red-text);">Supply starts to dip</span>
+        <div class="flow-note">Okay occasionally, not as a pattern in early weeks.</div>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title"><span class="dot dot-blue"></span>A realistic daily pumping rhythm (weeks 1–4)</div>
       <div class="schedule-row"><span class="time-badge">Morning</span><div class="schedule-text"><strong>Best pump session of the day.</strong> Pump once after the first morning nursing session. Supply is highest and letdown is easiest. This is your primary stash-building session.</div></div>
-      <div class="schedule-row"><span class="time-badge">Daytime</span><div class="schedule-text"><strong>Nurse directly as much as possible.</strong> Pump only if engorged, if baby skipped a feed, or if you're trying to boost supply. No need to pump after every nursing session.</div></div>
+      <div class="schedule-row"><span class="time-badge">Daytime</span><div class="schedule-text"><strong>Nurse directly as much as possible.</strong> Pump only if engorged, if baby skipped a feed, or if you're trying to boost supply.</div></div>
       <div class="schedule-row"><span class="time-badge">Evening</span><div class="schedule-text"><strong>Optional second pump.</strong> Some families pump once in the evening to build the overnight bottle supply. Worth doing if supply feels low or you want a bigger stash.</div></div>
-      <div class="schedule-row"><span class="time-badge">Overnight</span><div class="schedule-text"><strong>One partner does a bottle feed, the other pumps.</strong> Wife pumps at the same time as the bottle feed — ideally the 2–3am session. She can pump and go right back to sleep. This protects supply while giving her a longer pre- and post-sleep stretch.</div></div>
+      <div class="schedule-row"><span class="time-badge">Overnight</span><div class="schedule-text"><strong>One partner does a bottle feed, the other pumps.</strong> Wife pumps at the same time as the bottle feed — ideally the 2–3am session. Pump and go right back to sleep. Protects supply while giving her a longer stretch.</div></div>
     </div>
-
     <div class="card">
       <div class="card-title"><span class="dot dot-amber"></span>Pumping practicalities</div>
       <ul>
-        <li><strong>Flange size matters more than people realize.</strong> The flange (the funnel part) must fit correctly — nipple should move freely, not the areola. Wrong size = pain, reduced output, and damaged tissue. Most people need a size other than what comes in the box.</li>
-        <li><strong>Output varies a lot and that's normal.</strong> 0.5–2 oz total per session is common in early weeks, even if supply is plentiful. Baby is more efficient than the pump.</li>
+        <li><strong>Flange size matters more than people realize.</strong> The nipple should move freely in the tunnel, not the areola. Wrong size = pain, reduced output, and damaged tissue. Most people need a different size than what comes in the box.</li>
+        <li><strong>Output varies widely and that's normal.</strong> 0.5–2 oz total per session is common in early weeks, even with plentiful supply. Baby is more efficient than the pump.</li>
         <li><strong>Wash pump parts after every use</strong> — or keep them in a sealed bag in the fridge between sessions (up to 24 hrs) to save time overnight.</li>
-        <li><strong>Hospital-grade pumps are more powerful.</strong> They can be rented — worth it in the early weeks especially if trying to establish supply or baby has trouble nursing.</li>
-        <li><strong>Hands-free pumping bras</strong> are life-changing. Lets you pump and do something else at the same time.</li>
-        <li><strong>Stay hydrated while pumping.</strong> Have a large water bottle next to the pump at all times.</li>
+        <li><strong>Hospital-grade pumps are more powerful</strong> and can be rented. Worth it in the early weeks especially if trying to establish supply or baby has trouble nursing.</li>
+        <li><strong>Hands-free pumping bras</strong> are life-changing. Pump and do something else at the same time.</li>
+        <li><strong>Stay hydrated while pumping.</strong> Keep a large water bottle next to the pump at all times.</li>
       </ul>
     </div>
-
     <div class="card">
       <div class="card-title"><span class="dot dot-pink"></span>Introducing the bottle — timing matters</div>
       <ul>
         <li>Wait until breastfeeding is well-established before introducing a bottle — usually around 3–4 weeks. Too early can cause "nipple confusion" and latch issues.</li>
-        <li>For late preterm babies: your pediatrician or lactation consultant may recommend introducing a bottle sooner if baby is struggling to get enough milk at the breast. Follow their guidance.</li>
+        <li>For late preterm babies: your pediatrician or lactation consultant may recommend introducing a bottle sooner if baby is struggling to get enough milk at the breast.</li>
         <li>Have someone other than your wife give the first few bottles — baby may refuse from mom since they know the real thing is right there.</li>
         <li>Use a slow-flow nipple (size 0 or 1) and pace the feed — hold bottle horizontal, let baby pause and control the flow.</li>
-        <li>If baby refuses a bottle, try different bottle brands/nipple shapes, different temperatures of milk, different holders, or offering when baby is calm but not starving.</li>
+        <li>If baby refuses the bottle, try different brands/nipple shapes, different temperatures of milk, different holders, or offering when baby is calm but not starving.</li>
       </ul>
     </div>
-
     <div class="card">
       <div class="card-title"><span class="dot dot-green"></span>Breastmilk storage quick reference</div>
-      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
-        <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:0.75rem; text-align:center;">
-          <div style="font-size:11px; color:var(--color-text-secondary); margin-bottom:4px;">Room temp</div>
-          <div style="font-size:18px; font-weight:500; color:var(--color-text-primary);">4 hrs</div>
-          <div style="font-size:11px; color:var(--color-text-tertiary);">up to 77°F</div>
-        </div>
-        <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:0.75rem; text-align:center;">
-          <div style="font-size:11px; color:var(--color-text-secondary); margin-bottom:4px;">Refrigerator</div>
-          <div style="font-size:18px; font-weight:500; color:var(--color-text-primary);">4 days</div>
-          <div style="font-size:11px; color:var(--color-text-tertiary);">40°F or colder</div>
-        </div>
-        <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:0.75rem; text-align:center;">
-          <div style="font-size:11px; color:var(--color-text-secondary); margin-bottom:4px;">Freezer</div>
-          <div style="font-size:18px; font-weight:500; color:var(--color-text-primary);">6 mo</div>
-          <div style="font-size:11px; color:var(--color-text-tertiary);">0°F or colder</div>
-        </div>
+      <div class="storage-grid">
+        <div class="storage-cell"><div class="s-label">Room temp</div><div class="s-val">4 hrs</div><div class="s-sub">up to 77°F</div></div>
+        <div class="storage-cell"><div class="s-label">Refrigerator</div><div class="s-val">4 days</div><div class="s-sub">40°F or colder</div></div>
+        <div class="storage-cell"><div class="s-label">Freezer</div><div class="s-val">6 mo</div><div class="s-sub">0°F or colder</div></div>
       </div>
-      <ul style="margin-top:0.75rem;">
+      <ul>
         <li>Label bags with date and amount. Use oldest milk first.</li>
         <li>Thaw frozen milk in the fridge overnight or in a warm water bath — never microwave.</li>
         <li>Once thawed, use within 24 hours. Never refreeze.</li>
@@ -265,7 +654,7 @@
     </div>
   </div>
 
-  <!-- DIAPERING -->
+  <!-- ===== DIAPERING ===== -->
   <div class="section" id="section-diapering">
     <div class="section-title">Diapering</div>
     <div class="card">
@@ -305,7 +694,7 @@
     </div>
   </div>
 
-  <!-- SLEEP -->
+  <!-- ===== SLEEP ===== -->
   <div class="section" id="section-sleep">
     <div class="section-title">Sleep & soothing</div>
     <div class="card">
@@ -342,7 +731,7 @@
     </div>
   </div>
 
-  <!-- BATHING -->
+  <!-- ===== BATHING ===== -->
   <div class="section" id="section-bathing">
     <div class="section-title">Bathing & general care</div>
     <div class="card">
@@ -367,14 +756,14 @@
       <div class="card-title"><span class="dot dot-purple"></span>Taking temperature</div>
       <ul>
         <li>Rectal thermometer is most accurate for newborns</li>
-        <li>Coat tip with petroleum jelly, insert 1/2 inch, hold 60 seconds</li>
+        <li>Coat tip with petroleum jelly, insert ½ inch, hold 60 seconds</li>
         <li>Normal: 97–100.4°F (36.1–38°C)</li>
-        <li>Fever in baby under 3 months (&gt;100.4°F) = call doctor immediately</li>
+        <li><strong>Fever in baby under 3 months (&gt;100.4°F) = call doctor immediately</strong></li>
       </ul>
     </div>
   </div>
 
-  <!-- POSTPARTUM -->
+  <!-- ===== POSTPARTUM ===== -->
   <div class="section" id="section-postpartum">
     <div class="section-title">Postpartum care (for your wife)</div>
     <div class="alert-box alert-pink">This section is for your wife's recovery. The first 6 weeks postpartum are a major physical healing period — just as important as caring for baby.</div>
@@ -389,6 +778,15 @@
         <li><strong>Night sweats:</strong> Very common as hormones shift. Keep a towel nearby.</li>
         <li><strong>Constipation:</strong> Stool softeners often prescribed. Stay hydrated, eat fiber. Don't strain.</li>
       </ul>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-green"></span>Breastfeeding — troubleshooting & support</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Milk "coming in."</strong> Colostrum is produced from birth. Full milk typically comes in days 2–4. Breasts may feel very full and hard — engorgement eases within a few days.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Sore nipples.</strong> Tenderness in week 1 is common. Persistent sharp pain = latch issue. Apply expressed breastmilk to nipples after feeding — it heals. Lanolin cream also helps.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Blocked ducts.</strong> Hard, tender lump in the breast. Keep feeding on that side, massage toward nipple during feeds, warm compress before feeding. If doesn't resolve in 24–48hrs or you develop fever, call OB.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Mastitis.</strong> Flu-like symptoms + a red, hot, painful area on the breast. Needs antibiotics — call OB promptly. Keep feeding — stopping makes it worse.</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Low supply concerns.</strong> Frequent feeding builds supply. Pump after feeds if needed. Stay very hydrated and eat enough (breastfeeding burns ~500 extra calories/day). A lactation consultant can assess and help.</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-text"><strong>Pumping basics.</strong> Aim for 8–10 times/day in early weeks to build supply. Flange size matters — ill-fitting flanges cause pain and reduce output. Hospital-grade pumps are available to rent.</div></div>
     </div>
     <div class="card">
       <div class="card-title"><span class="dot dot-purple"></span>Mental health — please read this</div>
@@ -424,30 +822,30 @@
     </div>
   </div>
 
-  <!-- TIPS -->
+  <!-- ===== TIPS ===== -->
   <div class="section" id="section-tips">
     <div class="section-title">Tips & tricks</div>
     <div class="card">
       <div class="card-title"><span class="dot dot-green"></span>Feeding tips</div>
-      <div class="tip-row"><div class="tip-icon" style="background:#E1F5EE; color:#0F6E56;">1</div><div class="tip-body"><strong>The "dream feed"</strong> Feed baby right before you go to sleep (10–11pm) without fully waking them. Can extend the first stretch of nighttime sleep.</div></div>
-      <div class="tip-row"><div class="tip-icon" style="background:#E1F5EE; color:#0F6E56;">2</div><div class="tip-body"><strong>Skin-to-skin for latch trouble</strong> Strip both mom and baby down — contact stimulates feeding instincts and helps with latch.</div></div>
-      <div class="tip-row"><div class="tip-icon" style="background:#E1F5EE; color:#0F6E56;">3</div><div class="tip-body"><strong>Football hold for engorgement</strong> Tuck baby under your arm for better latch control when breasts are very full.</div></div>
-      <div class="tip-row"><div class="tip-icon" style="background:#E1F5EE; color:#0F6E56;">4</div><div class="tip-body"><strong>Hand-express before latching</strong> If very engorged, express a little first to soften the areola so baby can latch more easily.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--green-bg); color:var(--green-text);">1</div><div class="tip-body"><strong>The "dream feed"</strong>Feed baby right before you go to sleep (10–11pm) without fully waking them. Can extend the first stretch of nighttime sleep.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--green-bg); color:var(--green-text);">2</div><div class="tip-body"><strong>Skin-to-skin for latch trouble</strong>Strip both mom and baby down — contact stimulates feeding instincts and helps with latch.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--green-bg); color:var(--green-text);">3</div><div class="tip-body"><strong>Football hold for engorgement</strong>Tuck baby under your arm for better latch control when breasts are very full.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--green-bg); color:var(--green-text);">4</div><div class="tip-body"><strong>Hand-express before latching</strong>If very engorged, express a little first to soften the areola so baby can latch more easily.</div></div>
     </div>
     <div class="card">
       <div class="card-title"><span class="dot dot-purple"></span>Sleep tips</div>
-      <div class="tip-row"><div class="tip-icon" style="background:#EEEDFE; color:#534AB7;">1</div><div class="tip-body"><strong>White noise louder than you think</strong> The womb is as loud as a vacuum cleaner. A white noise machine at ~65 decibels can be transformative.</div></div>
-      <div class="tip-row"><div class="tip-icon" style="background:#EEEDFE; color:#534AB7;">2</div><div class="tip-body"><strong>Catch the sleep window</strong> Put baby down at the first yawn or eye-rub. An overtired baby fights sleep hard.</div></div>
-      <div class="tip-row"><div class="tip-icon" style="background:#EEEDFE; color:#534AB7;">3</div><div class="tip-body"><strong>Warm the bassinet sheet</strong> A heating pad on the sheet for a few minutes before transfer (remove before laying baby down) prevents the cold-sheet startle wake.</div></div>
-      <div class="tip-row"><div class="tip-icon" style="background:#EEEDFE; color:#534AB7;">4</div><div class="tip-body"><strong>Hold upright after feeds</strong> Keep baby upright for 15–20 minutes before putting down. Reduces spit-up and nighttime discomfort.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--purple-bg); color:var(--purple-text);">1</div><div class="tip-body"><strong>White noise louder than you think</strong>The womb is as loud as a vacuum cleaner. A white noise machine at ~65 decibels can be transformative.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--purple-bg); color:var(--purple-text);">2</div><div class="tip-body"><strong>Catch the sleep window</strong>Put baby down at the first yawn or eye-rub. An overtired baby fights sleep hard.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--purple-bg); color:var(--purple-text);">3</div><div class="tip-body"><strong>Warm the bassinet sheet</strong>A heating pad on the sheet for a few minutes before transfer (remove first!) prevents the cold-sheet startle wake.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--purple-bg); color:var(--purple-text);">4</div><div class="tip-body"><strong>Hold upright after feeds</strong>Keep baby upright for 15–20 minutes before putting down. Reduces spit-up and nighttime discomfort.</div></div>
     </div>
     <div class="card">
       <div class="card-title"><span class="dot dot-amber"></span>Survival tips for parents</div>
-      <div class="tip-row"><div class="tip-icon" style="background:#FAEEDA; color:#854F0B;">1</div><div class="tip-body"><strong>Set up feeding stations</strong> Snacks, water bottle, phone charger, burp cloth, remote — at every place you regularly feed. You'll be there a lot.</div></div>
-      <div class="tip-row"><div class="tip-icon" style="background:#FAEEDA; color:#854F0B;">2</div><div class="tip-body"><strong>Accept every offer of help</strong> When someone asks, say "Bring a meal" or "Come hold the baby while I shower." Specific asks get results.</div></div>
-      <div class="tip-row"><div class="tip-icon" style="background:#FAEEDA; color:#854F0B;">3</div><div class="tip-body"><strong>Double-diaper at night</strong> Put two diapers on at bedtime to absorb more and reduce the chance of a 3am blowout.</div></div>
-      <div class="tip-row"><div class="tip-icon" style="background:#FAEEDA; color:#854F0B;">4</div><div class="tip-body"><strong>Onesie snaps go down, not up</strong> The envelope fold at the neck lets you pull a blowout outfit down off baby instead of over their head.</div></div>
-      <div class="tip-row"><div class="tip-icon" style="background:#FAEEDA; color:#854F0B;">5</div><div class="tip-body"><strong>It's okay to put baby down</strong> If overwhelmed, put baby in their safe sleep space and step away for a few minutes. A crying baby in a safe place is okay.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--amber-bg); color:var(--amber-text);">1</div><div class="tip-body"><strong>Set up feeding stations</strong>Snacks, water bottle, phone charger, burp cloth, remote — at every place you regularly feed. You'll be there a lot.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--amber-bg); color:var(--amber-text);">2</div><div class="tip-body"><strong>Accept every offer of help</strong>When someone asks, say "Bring a meal" or "Come hold the baby while I shower." Specific asks get results.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--amber-bg); color:var(--amber-text);">3</div><div class="tip-body"><strong>Double-diaper at night</strong>Put two diapers on at bedtime to absorb more and reduce the chance of a 3am blowout.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--amber-bg); color:var(--amber-text);">4</div><div class="tip-body"><strong>Onesie snaps go down, not up</strong>The envelope fold at the neck lets you pull a blowout outfit down off baby instead of over their head.</div></div>
+      <div class="tip-row"><div class="tip-icon" style="background:var(--amber-bg); color:var(--amber-text);">5</div><div class="tip-body"><strong>It's okay to put baby down</strong>If overwhelmed, put baby in their safe sleep space and step away for a few minutes. A crying baby in a safe place is okay.</div></div>
     </div>
     <div class="card">
       <div class="card-title"><span class="dot dot-pink"></span>Late preterm baby tips (37 weeks)</div>
@@ -461,43 +859,43 @@
     </div>
   </div>
 
-  <!-- RESOURCES -->
+  <!-- ===== RESOURCES ===== -->
   <div class="section" id="section-resources">
     <div class="section-title">Resources</div>
     <div class="card">
       <div class="card-title"><span class="dot dot-pink"></span>Breastfeeding support</div>
-      <a class="resource-link" href="https://www.llli.org" target="_blank"><span class="resource-cat rc-bf">Breastfeeding</span><div class="resource-text"><div class="resource-name">La Leche League International (llli.org)</div><div class="resource-desc">Peer support, local groups, and a warmline for breastfeeding questions at any hour.</div></div></a>
-      <a class="resource-link" href="https://www.cdc.gov/breastfeeding" target="_blank"><span class="resource-cat rc-bf">Breastfeeding</span><div class="resource-text"><div class="resource-name">CDC Breastfeeding resources</div><div class="resource-desc">Guides on pumping, storage, returning to work, and support by state.</div></div></a>
-      <a class="resource-link" href="https://www.ibclc.org/find-an-ibclc/" target="_blank"><span class="resource-cat rc-bf">Breastfeeding</span><div class="resource-text"><div class="resource-name">Find a lactation consultant (ibclc.org)</div><div class="resource-desc">Directory of board-certified IBCLCs near you. Many accept insurance.</div></div></a>
+      <a class="resource-link" href="https://www.llli.org" target="_blank"><span class="resource-cat rc-bf">Breastfeeding</span><div><div class="resource-name">La Leche League International (llli.org)</div><div class="resource-desc">Peer support, local groups, and a warmline for breastfeeding questions at any hour.</div></div></a>
+      <a class="resource-link" href="https://www.cdc.gov/breastfeeding" target="_blank"><span class="resource-cat rc-bf">Breastfeeding</span><div><div class="resource-name">CDC Breastfeeding resources</div><div class="resource-desc">Guides on pumping, storage, returning to work, and support by state.</div></div></a>
+      <a class="resource-link" href="https://www.ibclc.org/find-an-ibclc/" target="_blank"><span class="resource-cat rc-bf">Breastfeeding</span><div><div class="resource-name">Find a lactation consultant (ibclc.org)</div><div class="resource-desc">Directory of board-certified IBCLCs near you. Many accept insurance.</div></div></a>
     </div>
     <div class="card">
       <div class="card-title"><span class="dot dot-blue"></span>Baby health & development</div>
-      <a class="resource-link" href="https://www.healthychildren.org" target="_blank"><span class="resource-cat rc-baby">Baby care</span><div class="resource-text"><div class="resource-name">HealthyChildren.org (American Academy of Pediatrics)</div><div class="resource-desc">The gold standard for pediatric guidance — feeding, sleep, development, vaccines, and when to call.</div></div></a>
-      <a class="resource-link" href="https://www.cdc.gov/safe-sleep" target="_blank"><span class="resource-cat rc-baby">Safe sleep</span><div class="resource-text"><div class="resource-name">CDC Safe Sleep guidelines</div><div class="resource-desc">The ABCs of safe sleep: Alone, Back, Crib. Clear, evidence-based guidance.</div></div></a>
-      <a class="resource-link" href="https://www.zerotothree.org" target="_blank"><span class="resource-cat rc-baby">Development</span><div class="resource-text"><div class="resource-name">Zero to Three (zerotothree.org)</div><div class="resource-desc">Baby brain development, language, bonding, and play — backed by research, written for parents.</div></div></a>
+      <a class="resource-link" href="https://www.healthychildren.org" target="_blank"><span class="resource-cat rc-baby">Baby care</span><div><div class="resource-name">HealthyChildren.org (American Academy of Pediatrics)</div><div class="resource-desc">The gold standard for pediatric guidance — feeding, sleep, development, vaccines, and when to call.</div></div></a>
+      <a class="resource-link" href="https://www.cdc.gov/safe-sleep" target="_blank"><span class="resource-cat rc-baby">Safe sleep</span><div><div class="resource-name">CDC Safe Sleep guidelines</div><div class="resource-desc">The ABCs of safe sleep: Alone, Back, Crib. Clear, evidence-based guidance.</div></div></a>
+      <a class="resource-link" href="https://www.zerotothree.org" target="_blank"><span class="resource-cat rc-baby">Development</span><div><div class="resource-name">Zero to Three (zerotothree.org)</div><div class="resource-desc">Baby brain development, language, bonding, and play — backed by research, written for parents.</div></div></a>
     </div>
     <div class="card">
       <div class="card-title"><span class="dot dot-purple"></span>Postpartum mental health</div>
-      <a class="resource-link" href="https://www.postpartum.net" target="_blank"><span class="resource-cat rc-mh">Mental health</span><div class="resource-text"><div class="resource-name">Postpartum Support International (postpartum.net)</div><div class="resource-desc">Helpline, peer support, and provider directory for PPD, anxiety, and psychosis. Helpline: 1-800-944-4773.</div></div></a>
-      <a class="resource-link" href="https://988lifeline.org" target="_blank"><span class="resource-cat rc-mh">Crisis support</span><div class="resource-text"><div class="resource-name">988 Suicide & Crisis Lifeline</div><div class="resource-desc">Call or text 988. Available 24/7 for any mental health crisis, including postpartum.</div></div></a>
+      <a class="resource-link" href="https://www.postpartum.net" target="_blank"><span class="resource-cat rc-mh">Mental health</span><div><div class="resource-name">Postpartum Support International (postpartum.net)</div><div class="resource-desc">Helpline, peer support, provider directory. Helpline: 1-800-944-4773.</div></div></a>
+      <a class="resource-link" href="https://988lifeline.org" target="_blank"><span class="resource-cat rc-mh">Crisis support</span><div><div class="resource-name">988 Suicide & Crisis Lifeline</div><div class="resource-desc">Call or text 988. Available 24/7 for any mental health crisis, including postpartum.</div></div></a>
     </div>
     <div class="card">
       <div class="card-title"><span class="dot dot-green"></span>General parenting</div>
-      <a class="resource-link" href="https://www.whattoexpect.com" target="_blank"><span class="resource-cat rc-general">General</span><div class="resource-text"><div class="resource-name">What to Expect (whattoexpect.com)</div><div class="resource-desc">Week-by-week baby development, community forums, and practical guides.</div></div></a>
-      <a class="resource-link" href="https://www.takingcarababies.com" target="_blank"><span class="resource-cat rc-general">Sleep</span><div class="resource-text"><div class="resource-name">Taking Cara Babies (takingcarababies.com)</div><div class="resource-desc">Age-appropriate sleep courses by a neonatal nurse. Newborn course is free.</div></div></a>
+      <a class="resource-link" href="https://www.whattoexpect.com" target="_blank"><span class="resource-cat rc-general">General</span><div><div class="resource-name">What to Expect (whattoexpect.com)</div><div class="resource-desc">Week-by-week baby development, community forums, and practical guides.</div></div></a>
+      <a class="resource-link" href="https://www.takingcarababies.com" target="_blank"><span class="resource-cat rc-general">Sleep</span><div><div class="resource-name">Taking Cara Babies (takingcarababies.com)</div><div class="resource-desc">Age-appropriate sleep courses by a neonatal nurse. Newborn course is free.</div></div></a>
     </div>
     <div class="card">
       <div class="card-title"><span class="dot dot-amber"></span>In an emergency</div>
-      <div style="font-size:13px; color: var(--color-text-secondary); line-height:1.9;">
-        <strong style="color:var(--color-text-primary);">Poison Control:</strong> 1-800-222-1222 (US, 24/7)<br>
-        <strong style="color:var(--color-text-primary);">Postpartum Support Intl:</strong> 1-800-944-4773<br>
-        <strong style="color:var(--color-text-primary);">Crisis line:</strong> Call or text 988<br>
-        <strong style="color:var(--color-text-primary);">Emergency:</strong> 911
+      <div class="emergency-info">
+        <strong>Poison Control:</strong> 1-800-222-1222 (US, 24/7)<br>
+        <strong>Postpartum Support Intl:</strong> 1-800-944-4773<br>
+        <strong>Crisis line:</strong> Call or text 988<br>
+        <strong>Emergency:</strong> 911
       </div>
     </div>
   </div>
 
-  <!-- ALERTS -->
+  <!-- ===== ALERTS ===== -->
   <div class="section" id="section-alerts">
     <div class="section-title">When to call / seek help</div>
     <div class="alert-box alert-red"><strong>Call 911 or go to the ER immediately if:</strong> baby stops breathing, turns blue/purple around mouth, is unresponsive or limp, has a seizure, or has a major injury.</div>
@@ -506,6 +904,9 @@
     <div class="alert-box alert-pink"><strong>Call OB for mom if:</strong> heavy bleeding (soaking a pad in under an hour), large clots, fever over 100.4°F, foul-smelling discharge, incision site separating or infected, inability to urinate, or symptoms of postpartum depression or anxiety.</div>
     <div class="alert-box alert-green"><strong>Appointments to book:</strong> Pediatrician at 2–3 days post-discharge (late preterm), 2 weeks, and 1 month. OB for mom at 6 weeks (or 2 weeks for c-section). Book before leaving the hospital.</div>
   </div>
+
+  <div class="footer">Made with love. Wishing your family a beautiful start. 🌱</div>
+
 </div>
 
 <script>
@@ -514,5 +915,8 @@ function showTab(id, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('section-' + id).classList.add('active');
   el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
+</body>
+</html>
